@@ -57,10 +57,11 @@ def vm_PowerOFF():
 
 if __name__ == "__main__":
 	connect()
-	currentDate()
-	vsphere_info()
-	datacenters()
-	vmlist()
+	
+	#currentDate()
+	#vsphere_info()
+	#datacenters()
+	#vmlist()
 	disConnect()
 
 

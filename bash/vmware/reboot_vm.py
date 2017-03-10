@@ -40,14 +40,13 @@ for i in vmlist:
 		vm=i
 		break
 print vm
-#print vm.name
+print vm.name
 # does the actual vm reboot
 
 print "reboot test"
 try:
     vm.RebootGuest()
     print "Successfully Rebooted"
-
 except:
     # forceably shutoff/on
     # need to do if vmware guest additions isn't running

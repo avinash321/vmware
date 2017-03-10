@@ -24,17 +24,39 @@ datacenter=datacenters[1]
 #VM Folder
 vmfolder=datacenter.vmFolder
 vmlist=vmfolder.childEntity
+global vm
+for i in vmlist:
+	if i.name=="python":
+		vm=i
+		break
+print vim.vm.ConfigInfo()
 
-# VM
-vm=vmlist[2]
+# Powered On VM Task
+'''
+k=vm.PowerOnVM_Task()
+print k
+print "Vm Powered On Successfully"
+'''
 
-print vm.name
+
+# Powered OFF VM task
+'''
+k=vm.PowerOffVM_Task()
+print k
+print "Vm Powered Off Successfull
+'''
 
 # Reboot
 #vm.RebootGuest()
 #vm.Reload()
-#vm.PowerOffVM_Task()
-#vm.PowerOnVM_Task()
+
+'''
+k=vm.MarkAsTemplate()
+print k
+print "Template Created Successfully"
+'''
+
+
 
 
 Disconnect(c)
