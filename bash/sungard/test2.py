@@ -13,8 +13,7 @@ except:
     print "successfully connected" 
 
 #------------------------------------------------------------------------------------------
-content = c.RetrieveContent()
-vm = get_obj(content, [vim.VirtualMachine], args.vm_name)
+
 #--------------------------------------------------------------------------------------------
 Disconnect(c)
 print "successfully disconnected"

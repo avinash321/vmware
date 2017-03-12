@@ -1,7 +1,7 @@
 from pyVmomi import vim
 from pyVim.connect import SmartConnect, Disconnect
 import time
-
+import ssl
 
 def _get_obj(content, vimtype, name):
     """
@@ -91,3 +91,37 @@ def get_registered_vms(si):
     Returns all vms
     """
     return _get_all_objs(si.RetrieveContent(), [vim.VirtualMachine])
+
+def get_templates_vms(si):
+    """
+    Returns all vms
+    """
+    return _get_all_objs(si.RetrieveContent(), [vim.VmTemplates])
+#----------------------------------------------------------------------------------------
+
+def connect():
+    vcenter = "183.82.41.58"
+    username = "root"
+    password = "Nexii@123"
+
+    si = None
+    s = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+    s.verify_mode = ssl.CERT_NONE
+
+    try:
+        si = SmartConnect(host = vcenter, user = username, pwd = password)
+        print "Valid certificate"
+        return si
+    except:
+        si = SmartConnect(host = vcenter, user = username, pwd = password, sslContext = s)
+        print "Connected to Vcenter Successfully "
+        return si 
+
+def disconnect(si):
+    Disconnect(si)
+    print "Diconeected to Vcenter Successfully"
+
+
+
+
+

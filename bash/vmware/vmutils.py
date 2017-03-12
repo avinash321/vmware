@@ -59,8 +59,51 @@ def disconnect():
 	Disconnect(c)
 	print "successfully disconnected"
 
+def get_vm(c,name):
+	#Find a virtual machine by it's name and return it
+    return get_obj(c.RetrieveContent(), vimtype, name)
+
+def get_all_objs(content, vimtype):
+	obj = {}
+	container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
+	for c in container.view:
+		obj.update({c: c.name})
+		for i in obj:
+			print i
+	return obj
+
+
+def get_obj(content, vimtype, name):
+	obj = None
+	container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
+	for c in container.view:
+		if c.name == name:
+			obj = c
+			print obj
+			print "The given machine was found successfully"
+			break	
+	return obj      
+
+def get_resoursepool(content, vimtype):
+	obj=None
+	container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
+	for c in container.view:
+		print c
+
 if __name__ == "__main__":
 	connect()
 	#get_vm_by_name("python")
+	#get_vm(c,"python")
+
+	# get_all_objs(c.RetrieveContent(), [vim.VirtualMachine])
+	# get_all_objs(c.RetrieveContent(), [vim.Datastore])
+	# get_all_objs(c.RetrieveContent(), [vim.ResourcePool])
+	# get_all_objs(c.RetrieveContent(), [vim.HostSystem])
+	#get_obj(c.RetrieveContent(),[vim.VirtualMachine],"controller")
+	get_resoursepool(c.RetrieveContent(),[vim.ResourcePool])
+	
+
+
+
 	
 	disconnect()
