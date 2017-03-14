@@ -1,7 +1,6 @@
 from pyVmomi import vim
 import vmutils
 import random
-import time
 
 si = vmutils.connect()
 

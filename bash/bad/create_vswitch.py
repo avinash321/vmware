@@ -18,11 +18,13 @@ from pyVim.connect import SmartConnect, Disconnect
 inputs = {'vcenter_ip': '183.82.41.58',
           'vcenter_password': 'Nexii@123',
           'vcenter_user': 'root',
-          'host_name': '192.168.50.16',
-          'switch_name': 'TestvSwitch',
-          'num_ports': 100,
-          'nic_name': 'vmnic2',
-          'port_group_name': 'TestPortGroup'
+
+          'host_name': '192.168.50.17',
+
+          'switch_name': 'sungard_switch',
+          'num_ports': 10,
+          'nic_name': 'vmnic1',
+          'port_group_name': 'Network11'
           }
 
 
@@ -95,8 +97,8 @@ def main():
         content = si.RetrieveContent()
 
         host = get_obj(content, [vim.HostSystem], inputs['host_name'])
-
         host_network_system = host.configManager.networkSystem
+
 
 #         for pnic in host.config.network.pnic:
 #             if pnic.device == inputs['nic_name']:
