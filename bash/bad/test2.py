@@ -6,9 +6,10 @@ import vmutils
 si=vmutils.connect()
 
 # Finding source VM
-target_vm = raw_input("Enter the Vm name , From which Vm you want to clone: ")
 newvm = raw_input('New vm name: ')
-template_vm = vmutils.get_vm_by_name(si, target_vm)
+template_vm = vmutils.get_vm_by_name(si, 'mytemp')
+print template_vm
+print template_vm.name
 
 '''
 There are two roads for modifying a vm creation from a template
@@ -48,7 +49,7 @@ customspec = vim.vm.customization.Specification(nicSettingMap=[adaptermap], glob
 resource_pool = vmutils.get_resource_pool(si, 'DEV')
 relocateSpec = vim.vm.RelocateSpec(pool=resource_pool)
 #cloneSpec = vim.vm.CloneSpec(powerOn=True, template=False, location=relocateSpec, customization=customspec, config=vmconf)
-cloneSpec = vim.vm.CloneSpec(powerOn=True, template=False, location=relocateSpec, customization=None, config=vmconf)
+cloneSpec = vim.vm.CloneSpec(powerOn=True, template = True, location=relocateSpec, customization=None, config=vmconf)
 
 # Creating clone task
 
@@ -57,3 +58,7 @@ print "The New VM "+ newvm.upper() +", Created Successfully"
 
 # close out connection
 vmutils.disconnect(si)
+
+
+
+

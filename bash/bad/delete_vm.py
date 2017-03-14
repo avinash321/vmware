@@ -1,5 +1,6 @@
 from pyVmomi import vim
 import vmutils
+import time
 
 # Connect to Vcenter
 si=vmutils.connect()
@@ -12,8 +13,10 @@ vm = vmutils.get_vm_by_name(si, vm_name)
 vm.PowerOffVM_Task()
 print "The given Vm "+ vm.name.upper() +", Powered Off Successfully"
 
+print "Please Wait....."
+time.sleep(6)
 # Deletion of VM
 vm.Destroy_Task()
-print "The given Vm "+ vm.name.upper() +", Deleted Successfully"
+print "The given Vm "+ vm_name + ", Deleted Successfully"
 
 vmutils.disconnect(si)

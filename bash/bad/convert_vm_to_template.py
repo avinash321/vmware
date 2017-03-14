@@ -1,5 +1,6 @@
 from pyVmomi import vim
 import vmutils
+import time
 
 # Connect to Vcenter
 si=vmutils.connect()
@@ -12,9 +13,11 @@ vm = vmutils.get_vm_by_name(si, vm_name)
 vm.PowerOffVM_Task()
 print "The given Vm "+ vm.name.upper() +", Powered Off Successfully"
 
+print "Please wait ...."
+time.sleep(6)
 
 vm.MarkAsTemplate()
-print "The given Vm "+ vm.name.upper() +" marked as tmplate Successfully"
+print "The given Vm "+ vm_name.upper() +" marked as tmplate Successfully"
 
 vmutils.disconnect(si)
 

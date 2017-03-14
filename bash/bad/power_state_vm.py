@@ -5,11 +5,14 @@ import vmutils
 si=vmutils.connect()
 
 # Finding source VM , that need to  Power Off
-vm_name = raw_input("Enter the VM name, that you want to know the  Power Status: ")
+vm_name = raw_input("Enter the VM name, that you want know the power status: ")
 vm = vmutils.get_vm_by_name(si, vm_name)
-#power_state=vim.vm.PowerState
-power_state=vm.runtime.powerState
-print power_state
-print "The given Vm "+ vm.name.upper() + "Power Status is: " + power_state
+if (vm == None):
+	print "The givemn vm is not available"
+	print "Please make sure the vm name"
+
+else:
+	power = vm.runtime.powerState
+	print "The given Vm "+ vm.name.upper() + " Power Status is: " + '\033[1m' + power.upper() + '\033[0m'
 
 vmutils.disconnect(si)

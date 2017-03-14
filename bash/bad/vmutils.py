@@ -114,12 +114,12 @@ def connect():
         return si
     except:
         si = SmartConnect(host = vcenter, user = username, pwd = password, sslContext = s)
-        print "Connected to Vcenter Successfully "
+        print "Connected to Vcenter Successfully"
         return si 
 
 def disconnect(si):
     Disconnect(si)
-    print "Diconeected to Vcenter Successfully"
+    print "Disconeected to Vcenter Successfully"
 
 
 
