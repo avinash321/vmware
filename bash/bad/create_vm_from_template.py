@@ -48,12 +48,16 @@ customspec = vim.vm.customization.Specification(nicSettingMap=[adaptermap], glob
 resource_pool = vmutils.get_resource_pool(si, 'DEV')
 relocateSpec = vim.vm.RelocateSpec(pool=resource_pool)
 #cloneSpec = vim.vm.CloneSpec(powerOn=True, template=False, location=relocateSpec, customization=customspec, config=vmconf)
-cloneSpec = vim.vm.CloneSpec(powerOn=True, template=False, location=relocateSpec, customization=None, config=vmconf)
+cloneSpec = vim.vm.CloneSpec(powerOn=False, template=False, location=relocateSpec, customization=None, config=vmconf)
 
 # Creating clone task
 
 clone = template_vm.Clone(name=newvm, folder=template_vm.parent, spec=cloneSpec)
 print clone
+print newvm
+print template_vm.parent
+print cloneSpec
+
 print "The New VM "+ newvm.upper() +", Created Successfully"
 
 # close out connection

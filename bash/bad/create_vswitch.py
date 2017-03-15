@@ -19,11 +19,11 @@ inputs = {'vcenter_ip': '183.82.41.58',
           'vcenter_password': 'Nexii@123',
           'vcenter_user': 'root',
 
-          'host_name': '192.168.50.17',
+          'host_name': '192.168.50.16',
 
           'switch_name': 'sungard_switch',
           'num_ports': 10,
-          'nic_name': 'vmnic1',
+          'nic_name': 'vmnic2',
           'port_group_name': 'Network11'
           }
 

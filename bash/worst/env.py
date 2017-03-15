@@ -21,16 +21,73 @@ rootfolder=content.rootFolder
 datacenters=rootfolder.childEntity
 datacenter=datacenters[1]
 
+
+datastore=datacenter.datastore[0]
+print datastore
+
 #VM Folder
 vmfolder=datacenter.vmFolder
+
+print vmfolder
 print vmfolder.name
+
 vmlist=vmfolder.childEntity
 global vm
 for i in vmlist:
 	if i.name=="python":
 		vm=i
 		break
-print vim.vm.ConfigInfo()
+
+print "avinash "+ vm.name
+
+# First Parameter
+template1=vm
+
+# set relospec
+relospec = vim.vm.RelocateSpec()
+relospec.datastore = datastore
+#relospec.pool = resource_pool
+
+
+
+clonespec = vim.vm.CloneSpec()
+clonespec.location = relospec
+clonespec.powerOn = True
+clonespec.template = False
+
+print "cloning VM..."
+template1.Clone(folder=vmfolder, name="avinash30", spec=clonespec)
+
+print "successful"
+
+
+
+# Location
+
+
+
+
+#print vim.vm.ConfigIvmnfo()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Powered On VM Task
 '''
