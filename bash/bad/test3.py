@@ -18,6 +18,8 @@ print "Please wait ...."
 time.sleep(6)
 resource_pool = None
 
+
+
 vm.MarkAsTemplate(resource_pool)
 print "The given Vm "+ vm_name.upper() +" marked as tmplate Successfully"
 

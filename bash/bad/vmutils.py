@@ -101,6 +101,7 @@ def get_templates_vms(si):
 
 def connect():
     vcenter = "183.82.41.58"
+    vcenter = "183.82.41.58"
     username = "root"
     password = "Nexii@123"
 
@@ -113,11 +114,13 @@ def connect():
         print "Valid certificate"
         return si
     except:
+        print "Trying to Connect Vcenter ......"
         si = SmartConnect(host = vcenter, user = username, pwd = password, sslContext = s)
         print "Connected to Vcenter Successfully"
         return si 
 
 def disconnect(si):
+    print "Trying to Disconnect Vcenter ......"
     Disconnect(si)
     print "Disconeected to Vcenter Successfully"
 

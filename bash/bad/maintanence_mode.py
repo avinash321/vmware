@@ -1,23 +1,10 @@
 import vmutils
 
-def get_host_by_name(si ,name):
-	# Root Folder
-	content=si.content
-	rootfolder=content.rootFolder
+# Connect to Vcenter
+si = vmutils.connect()
 
-	#DataCenter
-	datacenters=rootfolder.childEntity
-	datacenter=datacenters[1]
-
-	#Host Folder
-	hostfolder = datacenter.hostFolder
-	domains = hostfolder.childEntity
-
-	# Getting the Host
-	domain = domains[0]
-	host = domain.host[0]
-
-	return host
+host_name = raw_input("Enter the Host name: ")
+host = vmutils.get_host_by_name(si, host_name)
 
 def enter_maintanence_mode(host):
 	host.EnterMaintenanceMode_Task(3000)
@@ -27,13 +14,10 @@ def enter_maintanence_mode(host):
 def exit_maintanence_mode(host):
 	host.ExitMaintenanceMode_Task(10)
 	print "Exit maintanence mode successfully"
-# # Putting the Host into Maintanence mode
+
 
 if __name__ == "__main__":
-	si = vmutils.connect()
-	host_name = raw_input("Enter the Host name: ")
-	host = get_host_by_name(si ,host_name)
-
 	exit_maintanence_mode(host)
 
-	vmutils.disconnect(si)
+# Disconnecting Vcenter
+vmutils.disconnect(si)
