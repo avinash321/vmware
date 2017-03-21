@@ -23,6 +23,7 @@ Notes:
 #mem = 512 * 1024 # convert to GB
 mem = 512  # MB
 vmconf = vim.vm.ConfigSpec(numCPUs=1, memoryMB=mem)
+print vmconf
 #vmconf.deviceChange = devices
 
 # Network adapter settings
@@ -45,10 +46,11 @@ customspec = vim.vm.customization.Specification(nicSettingMap=[adaptermap], glob
 
 
 # Creating relocate spec and clone spec
-resource_pool = vmutils.get_resource_pool(si, 'DEV')
-relocateSpec = vim.vm.RelocateSpec(pool=resource_pool)
-#cloneSpec = vim.vm.CloneSpec(powerOn=True, template=False, location=relocateSpec, customization=customspec, config=vmconf)
-cloneSpec = vim.vm.CloneSpec(powerOn=False, template=False, location=relocateSpec, customization=None, config=vmconf)
+resource_pool = vmutils.get_datastore(si,"datastore1 (1)")
+relocateSpec = vim.vm.RelocateSpec(datastore = resource_pool, pool=None)
+print relocateSpec
+#cloneSpec = vim.vm.CloneSpec(powerOn=True, template=False, customization=customspec, config=vmconf)
+cloneSpec = vim.vm.CloneSpec(powerOn=False, template=False , location=relocateSpec, customization=None, config=vmconf)
 
 # Creating clone task
 

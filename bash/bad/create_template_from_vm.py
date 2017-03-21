@@ -8,7 +8,7 @@ import time
 import ssl
 
 inputs = {'vcenter_ip': '183.82.41.58',
-          'vcenter_password': 'Nexii@123',
+          'vcenter_password': 'VMware@123',
           'vcenter_user': 'root',
           #'vm_name' : 'python',
           'target_host': '192.168.50.16',

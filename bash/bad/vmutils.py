@@ -74,6 +74,14 @@ def get_datastores(si):
     """
     return _get_all_objs(si.RetrieveContent(), [vim.Datastore])
 
+#----------------Changed
+
+def get_datastore(si,name):
+    """
+    Returns the data store
+    """
+    return _get_obj(si.RetrieveContent(), [vim.Datastore] , name)
+
 def get_hosts(si):
     """
     Returns all hosts
@@ -101,9 +109,8 @@ def get_templates_vms(si):
 
 def connect():
     vcenter = "183.82.41.58"
-    vcenter = "183.82.41.58"
     username = "root"
-    password = "Nexii@123"
+    password = "VMware@123"
 
     si = None
     s = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
