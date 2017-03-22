@@ -1,0 +1,7 @@
+vm_disk:
+  Hard disk 1:
+    size_gb: 1
+    type: thin
+  Hard disk 2:
+    size_gb: 1
+    type: thin
