@@ -13,7 +13,7 @@ datacenter=datacenters[1]
 
 
 virtualDiskManager = si.content.virtualDiskManager
-task = virtualDiskManager.ExtendVirtualDisk("[datastore1 (1)] python/python.vmdk" ,datacenter,15*1024*1024,False)
+task = virtualDiskManager.ExtendVirtualDisk("[datastore1 (1)] python/python.vmdk" ,datacenter,3*1024*1024,False)
 
 
 while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:

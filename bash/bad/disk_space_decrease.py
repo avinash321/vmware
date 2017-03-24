@@ -19,6 +19,6 @@ task = virtualDiskManager.ShrinkVirtualDisk_Task("[datastore1 (1)] python/python
 while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
 	time.sleep(1)
 
-print "Disk space increased succesfully"
+print "Disk space decreased succesfully"
 
 vmutils.disconnect(si)
