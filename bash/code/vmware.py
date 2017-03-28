@@ -4,31 +4,21 @@ import time
 import ssl
 
 class VmwareLib:
-
-    def __init__(self):
-        global vcenter
-        global username
-        global password
-        global si
-        vcenter = "183.82.41.58"
-        username = "root"
-        password = "VMware@123"
-
-    def connect(self):
-        s = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-        s.verify_mode = ssl.CERT_NONE
+        
+    def connect(self, vcenter_ip, username, password):
         try:
-            si = SmartConnect(host = self.vcenter, user = self.username, pwd = self.password)
-            print "Valid certificate"
+            si = SmartConnect(host = vcenter_ip, user = username, pwd = password)
             return si
         except:
+            s = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+            s.verify_mode = ssl.CERT_NONE
             print "Trying to Connect Vcenter ......"
-            si = SmartConnect(host = vcenter, user = username, pwd = password, sslContext = s)
+            si = SmartConnect(host = vcenter_ip, user = username, pwd = password, sslContext = s)
             print "Connected to Vcenter Successfully"
             return si
 
     def disconnect(self,si):
-        print "Trying to Disconnect Vcenter ......"
+        #print "Trying to Disconnect Vcenter ......"
         Disconnect(si)
         print "Disconeected to Vcenter Successfully"
 
@@ -49,21 +39,15 @@ class VmwareLib:
                 break
         return obj
 
-    def get_vm_by_name(self,si, name):
+    def get_vm_by_name(self, si, name):
         vm = self.get_obj(si.RetrieveContent(), [vim.VirtualMachine], name)
         return vm
 
-
-    def get_vmdk(self,vm):
-        for device in vm.config.hardware.device:
-            if type(device).__name__ == 'vim.vm.device.VirtualDisk':
-                return device.backing.fileName
-
     def get_host_by_name(self,si, name):
         host = self.get_obj(si.RetrieveContent(), [vim.HostSystem], name)
-        return host
+        return host       
 
-    def get_datacenter(self,si,name):
+    def get_datacenter_by_name(self,si,name):
         datacenter = self.get_obj(si.RetrieveContent(), [vim.Datacenter],name)
         return datacenter
 
@@ -72,6 +56,11 @@ class VmwareLib:
             if type(device).__name__ == 'vim.vm.device.VirtualDisk':
                 #print 'SIZE', device.deviceInfo.summary
                 return device.capacityInKB
+
+    def get_vmdk(self, vm):
+        for device in vm.config.hardware.device:
+            if type(device).__name__ == 'vim.vm.device.VirtualDisk':
+                return device.backing.fileName
 
     def disk_space_increase(self,si,vmdk,datacenter,sizeinkb,eagerzero):
         virtualDiskManager = si.content.virtualDiskManager
@@ -103,8 +92,12 @@ class VmwareLib:
         
 if __name__ == "__main__":
 
+    vcenter_ip = "183.82.41.58"
+    username = "root"
+    password = "VMware@123"
+
     # Creating Object for VMware Class
-    obj = VmwareLib()
+    obj = VmwareLib(vcenter_ip, username, password)
 
     # Connecting to Vcenter
     si = obj.connect()

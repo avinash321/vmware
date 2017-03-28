@@ -1,6 +1,7 @@
 from pyVmomi import vim
 import vmutils
 
+
 # Connect to Vcenter
 si=vmutils.connect()
 

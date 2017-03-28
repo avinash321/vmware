@@ -6,18 +6,26 @@ Disconnects the Vcenetr
 from vmware import VmwareLib
 
 # Creating the object for vmwareLib class
-obj = VmwareLib()
+def name(vm_name, obj):
 
-# Connecting to Vcenter Server
-si = obj.connect()
-vm_name = raw_input("Enter the Vm name: ")
-vm = obj.get_vm_by_name(si,vm_name)
+	vm = obj.get_vm_by_name(si,vm_name)
+	print vm
 
-k = obj.disk_space_of_vm(vm)
-print k
+if __name__ == "__main__":
 
-print type(k)
+    # Creating Object for VMwareLib Class
+    obj = VmwareLib()
 
-# Disconnecting form Vcenetr
-obj.disconnect(si)
+    vcenter_ip = "183.82.41.58"
+    username = "root"
+    password = "VMware@123"
+
+    # Connecting to Vcenter
+    si = obj.connect(vcenter_ip, username, password)
+
+    #vm operation
+    name("avinash", obj)
+
+    # Disconnecting to Vcenter
+    obj.disconnect(si)
 
