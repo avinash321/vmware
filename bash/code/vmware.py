@@ -9,25 +9,32 @@ class VmwareLib:
         try:
             si = SmartConnect(host = vcenter_ip, user = username, pwd = password)
             return si
-        except:
+
+        except ssl.SSLError:
             s = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
             s.verify_mode = ssl.CERT_NONE
             print "Trying to Connect Vcenter ......"
-            si = SmartConnect(host = vcenter_ip, user = username, pwd = password, sslContext = s)
-            print "Connected to Vcenter Successfully"
-            return si
+            try:
+                si = SmartConnect(host = vcenter_ip, user = username, pwd = password, sslContext = s)
+                if si:
+                    print "Connected to Vcenter Successfully"
+                    return si
+            except Exception as err:
+                print err.msg
+        except:
+            print "Something went wrong"
 
     def disconnect(self,si):
         #print "Trying to Disconnect Vcenter ......"
         Disconnect(si)
         print "Disconeected to Vcenter Successfully"
 
-    def enter_maintanence_mode(host):
-        host.EnterMaintenanceMode_Task(3000)
+    def enter_maintanence_mode(host, timeout):
+        host.EnterMaintenanceMode_Task(timeout)
         print "Enter maintanence mode successfully"
 
-    def exit_maintanence_mode(host):
-        host.ExitMaintenanceMode_Task(10)
+    def exit_maintanence_mode(host, timeout):
+        host.ExitMaintenanceMode_Task(timeout)
         print "Exit maintanence mode successfully"
 
     def get_obj(self,content, vimtype, name):
@@ -40,7 +47,11 @@ class VmwareLib:
         return obj
 
     def get_vm_by_name(self, si, name):
-        vm = self.get_obj(si.RetrieveContent(), [vim.VirtualMachine], name)
+        par1 = si.RetrieveContent()
+        if par1 == None:
+           return 'Error'
+        else:
+           vm = self.get_obj(si.RetrieveContent(), [vim.VirtualMachine], name)
         return vm
 
     def get_host_by_name(self,si, name):
@@ -52,10 +63,12 @@ class VmwareLib:
         return datacenter
 
     def disk_space_of_vm(self,vm):
+        return_value = None
         for device in vm.config.hardware.device:
             if type(device).__name__ == 'vim.vm.device.VirtualDisk':
                 #print 'SIZE', device.deviceInfo.summary
-                return device.capacityInKB
+                return_value = device.capacityInKB
+        return return_value
 
     def get_vmdk(self, vm):
         for device in vm.config.hardware.device:
@@ -89,7 +102,9 @@ class VmwareLib:
         host.ShutdownHost_Task(True)
         print "Shutdown the Host successfully"
 
-        
+    
+
+
 if __name__ == "__main__":
 
     vcenter_ip = "183.82.41.58"

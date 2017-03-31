@@ -2,10 +2,11 @@
 This will put the given Esxi Host into maintanence mode
 '''
 from vmware import VmwareLib
-def maintanencemode(si, host_name):
+def maintanencemode(si, host_name, obj):
 	host = obj.get_host_by_name(si, host_name)
+	timeout = 3000
 	# This will put the given Esxi host in maintanence mode
-	obj.enter_maintanence_mode(host)
+	obj.enter_maintanence_mode(host, timeout)
 
 if __name__ == "__main__":
 

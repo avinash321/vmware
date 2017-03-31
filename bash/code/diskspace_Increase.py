@@ -28,10 +28,12 @@ def increase_disk(vm, obj, new_size, initial_diskspace,datacenter_name):
         eagerzero = False
         obj.disk_space_increase(si,vmdk,datacenter,new_size,eagerzero)
 
-        time.sleep(5)
+        time.sleep(8)
         new_diskspace = obj.disk_space_of_vm(vm)
+        print "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
         print new_diskspace
         print initial_diskspace
+        print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
         if new_diskspace > initial_diskspace:
             print "Disk space increased succesfully"
@@ -66,7 +68,7 @@ if __name__ == "__main__":
     #Step3: checking the initial disk space
     initial_diskspace = initial_diskspace(vm, obj)
     #step4: setting the Newsize
-    new_size = 32 * (1024 * 1024)
+    new_size = 35 * (1024 * 1024)
     datacenter_name = "Nexiilabs"
     increase_disk(vm, obj, new_size, initial_diskspace, datacenter_name)
     # Disconnecting to Vcenter
