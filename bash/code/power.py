@@ -1,29 +1,40 @@
+
 from vmware import VmwareLib
 
-# Creating the object for vmwareLib class
-obj = VmwareLib()
+def get_vm(si,vm_name, obj):
 
-# Connecting to Vcenter Server
-si = obj.connect()
+    vm = obj.get_vm_by_name(si,vm_name)
+    return vm
 
-vm_name = raw_input("Enter the Vm name: ")
-vm = obj.get_vm_by_name(si,vm_name)
+if __name__ == "__main__":
 
-# Power on VM 
-print "plese select any one of the follwing options"
-n = input("1.Power ON VM    2.Power OFF VM    3.Power state of VM:  ")
+    # Creating Object for VMwareLib Class
+    obj = VmwareLib()
 
-if n==1:
-	obj.power_on_vm(vm)
+    vcenter_ip = "183.82.41.58"
+    username = "root"
+    password = "VMware@123"
 
-elif n==2:
-	obj.power_off_vm(vm)
+    # Connecting to Vcenter
+    si = obj.connect(vcenter_ip, username, password)
 
-elif n==3:
-	obj.power_state_vm(vm)
+    #Getting Vm
+    vm_name = "avinash"
+    vm = get_vm(si, vm_name, obj)
+    if vm:
+        print "plese select any one of the follwing options"
+        n = input("1.Power ON VM    2.Power OFF VM    3.Power state of VM:  ")
 
-else:
-	print "please select valid option"
+        if n==1:
+            obj.power_on_vm(vm)
 
-# Disconnecting form Vcenetr
-obj.disconnect(si)
+        elif n==2:
+            obj.power_off_vm(vm)
+
+        elif n==3:
+            obj.power_state_vm(vm)
+
+        else:
+            print "please select valid option"
+
+    obj.disconnect(si)

@@ -3,11 +3,12 @@ This will Reboot the given Esxi Host
 '''
 from vmware import VmwareLib
 
-def reboot(si, host_name):
+def reboot(si, host_name, obj):
 	host = obj.get_host_by_name(si, host_name)
 	#This will Reboot the given Esxi Host
-	obj.reboot_host(host)
-
+	if host:
+		force = True
+		obj.reboot_host(host, force)
 
 if __name__ == "__main__":
 
@@ -23,7 +24,7 @@ if __name__ == "__main__":
 
     #Reboot operation
     host_name = "192.168.50.16"
-    reboot(si, host_name)
+    reboot(si, host_name, obj)
 
     # Disconnecting to Vcenter
     obj.disconnect(si)

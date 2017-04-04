@@ -8,6 +8,7 @@ def maintanencemode(si, host_name, obj):
 	# This will put the given Esxi host in maintanence mode
 	obj.enter_maintanence_mode(host, timeout)
 
+
 if __name__ == "__main__":
 
     # Creating Object for VMwareLib Class
@@ -21,7 +22,7 @@ if __name__ == "__main__":
     si = obj.connect(vcenter_ip, username, password)
 
     #Reboot operation
-    host_name = "192.168.50.16"
+    host_name = "192.168.50.22"
     maintanencemode(si, host_name, obj)
 
     # Disconnecting to Vcenter

@@ -29,13 +29,37 @@ class VmwareLib:
         Disconnect(si)
         print "Disconeected to Vcenter Successfully"
 
-    def enter_maintanence_mode(host, timeout):
-        host.EnterMaintenanceMode_Task(timeout)
-        print "Enter maintanence mode successfully"
+    def reboot_host(self,host,force):
+        try:
 
-    def exit_maintanence_mode(host, timeout):
-        host.ExitMaintenanceMode_Task(timeout)
-        print "Exit maintanence mode successfully"
+            task = host.RebootHost_Task(force)
+            return vim.Task.name
+            print "Rebooted the Host successfully"
+        except:
+            print "Failed to Reboot, something went wrong"
+
+    def shut_down_host(self,host):
+        try:
+            host.ShutdownHost_Task(True)
+            print "Shutdown the Host successfully"
+        except:
+            print "Failed to Shutdown, something went wrong"
+
+
+    def enter_maintanence_mode(self, host, timeout):
+        try:
+            host.EnterMaintenanceMode_Task(timeout)
+            print "Enter maintanence mode successfully"
+        except:
+            print "Failed to put into maintanencemode, something went wrong"
+
+    def exit_maintanence_mode(self, host, timeout):
+        try:
+            host.ExitMaintenanceMode_Task(timeout)
+            print "Exit maintanence mode successfully"
+        except:
+            print "Failed to put into exit maintanencemode, something went wrong"
+
 
     def get_obj(self,content, vimtype, name):
         obj = None
@@ -47,20 +71,33 @@ class VmwareLib:
         return obj
 
     def get_vm_by_name(self, si, name):
-        par1 = si.RetrieveContent()
-        if par1 == None:
-           return 'Error'
+        vm = self.get_obj(si.RetrieveContent(), [vim.VirtualMachine], name)
+        if vm:
+            return vm
         else:
-           vm = self.get_obj(si.RetrieveContent(), [vim.VirtualMachine], name)
-        return vm
+            print "There is no vm , with the given name: "+ name
 
     def get_host_by_name(self,si, name):
-        host = self.get_obj(si.RetrieveContent(), [vim.HostSystem], name)
-        return host       
+        host = self.get_obj(si.RetrieveContent(), [vim.HostSystem], name) 
+        if host:
+            return host
+        else:
+            print "There is no host , with the given name: "+ name    
 
     def get_datacenter_by_name(self,si,name):
         datacenter = self.get_obj(si.RetrieveContent(), [vim.Datacenter],name)
-        return datacenter
+        if datacenter:
+            return datacenter
+        else:
+            print "There is no datacenter , with the given name: "+ name     
+
+
+    def get_datastore_by_name(self,si,name):
+        datastore = self.get_obj(si.RetrieveContent(), [vim.Datastore],name)
+        if datastore:
+            return datastore
+        else:
+            print "There is no datastore , with the given name: "+ name     
 
     def disk_space_of_vm(self,vm):
         return_value = None
@@ -76,33 +113,36 @@ class VmwareLib:
                 return device.backing.fileName
 
     def disk_space_increase(self,si,vmdk,datacenter,sizeinkb,eagerzero):
-        virtualDiskManager = si.content.virtualDiskManager
-        task = virtualDiskManager.ExtendVirtualDisk(vmdk ,datacenter,sizeinkb,eagerzero)
-        while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
-            time.sleep(1)
+        try:
+            virtualDiskManager = si.content.virtualDiskManager
+            task = virtualDiskManager.ExtendVirtualDisk(vmdk ,datacenter,sizeinkb,eagerzero)
+            while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
+                time.sleep(1)
+        except:
+            print "Unable to increase the increase the disk space, somethin went"
 
     def power_off_vm(self,vm):
-        vm.PowerOffVM_Task()
-        print "The given Vm "+ vm.name.upper() +", Powered Off Successfully"
+        try:
+            vm.PowerOffVM_Task()
+            print "The given Vm "+ vm.name.upper() +", Powered Off Successfully"
+        except:
+            print "something went wrong, unable to power off the VM"
 
     def power_on_vm(self,vm):
-        vm.PowerOnVM_Task()
-        print "The given Vm "+ vm.name.upper() +", Powered ON Successfully"
+        try:
+            vm.PowerOnVM_Task()
+            print "The given Vm "+ vm.name.upper() +", Powered ON Successfully"
+        except:
+            print "something went wrong, unable to power on the VM"
 
     def power_state_vm(self,vm):
-        power = vm.runtime.powerState
-        print "The given Vm "+ vm.name.upper() + " Power Status is: " + '\033[1m' + power.upper() + '\033[0m'
-        return power
+        try:
+            power = vm.runtime.powerState
+            print "The given Vm "+ vm.name.upper() + " Power Status is: " + '\033[1m' + power.upper() + '\033[0m'
+            return power
+        except:
+            print "something went wrong, unable to print the power state of the VM"
 
-    def reboot_host(self,host):
-        host.RebootHost_Task(True)
-        print "Rebooted the Host successfully"
-
-    def shut_down_host(self,host):
-        host.ShutdownHost_Task(True)
-        print "Shutdown the Host successfully"
-
-    
 
 
 if __name__ == "__main__":

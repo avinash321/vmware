@@ -1,26 +1,26 @@
 from vmware import VmwareLib
 from pyVmomi import vim
 
-def vmotion(vm, host):
-	vm_name = vm
-	esx_host = host
-
+def vmotion(si, vm_name, esx_host, datastore,obj):
 	# Finding source VM
 	vm = obj.get_vm_by_name(si, vm_name)
 	# Finding source Host
 	esx_host = obj.get_host_by_name(si, esx_host)
 
+	datastore = obj.get_datastore_by_name(si, datastore)
+	print datastore
+
 	if(vm and esx_host):
 		# relocate spec, to migrate to another host
 		# this can do other things, like storage and resource pool
 		# migrations
-		relocate_spec = vim.vm.RelocateSpec(host=esx_host)
+		relocate_spec = vim.vm.RelocateSpec(host=esx_host, datastore=datastore)
+		print relocate_spec
 		try:
 			# does the actual migration to host
-			vm.Relocate(relocate_spec)
+			print vm.RelocateVM_Task(relocate_spec)
 			print "Vm Migrated Successfully"
-		except Exception as err:
-			print err
+		except:
 			print "Vm Migration is Not Successful , Something went wrong"
 
 
@@ -39,7 +39,8 @@ if __name__ == "__main__":
     #Vmotion operation
     vm_name = "avinash"
     host_name = "192.168.50.17"
-    vmotion(vm_name, host_name)
+    datastore = "host-17-DS-1"
+    vmotion(si, vm_name, host_name,datastore, obj)
 
     # Disconnecting to Vcenter
     obj.disconnect(si)

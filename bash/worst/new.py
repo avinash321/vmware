@@ -1,6 +1,4 @@
-print "Starting"
 
-str
 
 
 
