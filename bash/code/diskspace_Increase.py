@@ -4,6 +4,9 @@ this will Increse the Disk space of he VM
 from vmware import VmwareLib
 import time
 
+class NoDatacenterFound(Exception):
+    pass
+
 # VM
 def get_vm(si, vm_name, obj):
     vm = obj.get_vm_by_name(si,vm_name)
@@ -38,6 +41,8 @@ def increase_disk(vm, obj, new_size, initial_diskspace,datacenter_name):
                 print "New Disk space is : "+ str(new_diskspace/ (1024*1024)) + "GB"
             else:
                 print "Disk space Not increased"
+        else:
+            raise NoDatacenterFound("Datacenter Not Found Error")
     else:
         print "The Initial capacity is :" + str(initial_diskspace/ (1024*1024) )+ "GB"
         print "The Given New capacity is: " + str(new_size/ (1024*1024))+ "GB"

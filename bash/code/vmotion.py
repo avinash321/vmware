@@ -1,5 +1,8 @@
 from vmware import VmwareLib
 from pyVmomi import vim
+import time
+class VmotionException(Exception):
+	pass
 
 def vmotion(vm, host):
 	vm_name = vm
@@ -17,11 +20,21 @@ def vmotion(vm, host):
 		relocate_spec = vim.vm.RelocateSpec(host=esx_host)
 		try:
 			# does the actual migration to host
-			vm.Relocate(relocate_spec)
-			print "Vm Migrated Successfully"
-		except Exception as err:
-			print err
+			t = vm.Relocate(relocate_spec)
+			time.sleep(10)
+			status = t.info.state
+
+			if status == "success":
+				print "Vm Migrated Successfully"
+			elif status == "running"
+				print "Vm Migration is in progress"
+			elif status == "error":
+				print "failed to migrate the VM"
+
+		except:
 			print "Vm Migration is Not Successful , Something went wrong"
+	else:
+		raise VmotionException("Vm or Host Not found Erro")
 
 
 if __name__ == "__main__":

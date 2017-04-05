@@ -1,10 +1,11 @@
 from vmware import VmwareLib
+from pyVmomi import vim
 
 # Creating the object for vmwareLib class
 def name(vm_name, obj):
-
-	vm = obj.get_vm_by_name(si,vm_name)
-	print vm
+    vm = obj.get_vm_by_name(si,vm_name)
+    t = obj.power_on_vm(vm)
+    print t.info.state
 
 if __name__ == "__main__":
 
@@ -17,4 +18,6 @@ if __name__ == "__main__":
 
     # Connecting to Vcenter
     si = obj.connect(vcenter_ip, username, password)
+    name("avinash",obj)
+
     obj.disconnect(si)

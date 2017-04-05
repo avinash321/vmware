@@ -2,6 +2,8 @@
 This will Reboot the given Esxi Host
 '''
 from vmware import VmwareLib
+class RebootException(Exception):
+   pass
 
 def reboot(si, host_name, obj):
 	host = obj.get_host_by_name(si, host_name)
@@ -9,6 +11,8 @@ def reboot(si, host_name, obj):
 	if host:
 		force = True
 		obj.reboot_host(host, force)
+    else:
+        raise RebootException("Host error")
 
 if __name__ == "__main__":
 
