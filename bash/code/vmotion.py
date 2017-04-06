@@ -46,15 +46,16 @@ if __name__ == "__main__":
 
     vcenter_ip = "183.82.41.58"
     username = "root"
-    password = "VMware@123"
+    password = "Nexii@123"
 
     # Connecting to Vcenter
     si = obj.connect(vcenter_ip, username, password)
 
-    #Vmotion operation
-    vm_name = "avinash"
-    host_name = "192.168.50.17"
-    vmotion(vm_name, host_name)
+    if si:
+	    #Vmotion operation
+	    vm_name = "avinash"
+	    host_name = "192.168.50.17"
+	    vmotion(vm_name, host_name)
 
-    # Disconnecting to Vcenter
-    obj.disconnect(si)
+	    # Disconnecting to Vcenter
+	    obj.disconnect(si)

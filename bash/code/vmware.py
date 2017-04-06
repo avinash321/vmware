@@ -23,7 +23,7 @@ class VmwareLib:
                 print err.msg
                 return None
         except Exception as err:
-            print "Something went wrong"
+            print "Something went wrong (please check your Vcenter Ip)"
             return None
 
     def disconnect(self,si):

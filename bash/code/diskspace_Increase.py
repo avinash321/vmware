@@ -63,38 +63,37 @@ def increase_disk(vm, obj, new_size, initial_diskspace,datacenter_name):
         return -1
 
 
-
-
 if __name__ == "__main__":
 
     vcenter_ip = "183.82.41.58"
     username = "root"
-    password = "VMware@123"
+    password = "Nexii@123"
 
     # Creating Object for VMware Class
     obj = VmwareLib()
 
+
     # Connecting to Vcenter
     si = obj.connect(vcenter_ip, username, password)
+    if si:
+        #Disk Increasing Operation
+        #step1: (Getting the Target VM)
+        vm_name = "avinash"
+        vm = get_vm(si, vm_name, obj)
 
-    #Disk Increasing Operation
-    #step1: (Getting the Target VM)
-    vm_name = "avinash"
-    vm = get_vm(si, vm_name, obj)
-
-    if vm:
-        #Step2: Checking the powersgtatus of the VM , If power is ON , it will Power off the VM
-        power_off_vm(vm, obj)
-        #Step3: checking the initial disk space
-        initial_diskspace = initial_diskspace(vm, obj)
-        print "The actual capacity of the disk is :" + str(initial_diskspace/(1024*1024))
-        new_size = input("Enter the new capacity in GB: ")
-        new_size = new_size * (1024 * 1024)
-        datacenter_name = "Nexiilabs"
-        increase_disk(vm, obj, new_size, initial_diskspace, datacenter_name)
-        # Disconnecting to Vcenter
-    else:
-        raise VmNotFoundException("Vm Not Found Error")
-    obj.disconnect(si)
+        if vm:
+            #Step2: Checking the powersgtatus of the VM , If power is ON , it will Power off the VM
+            power_off_vm(vm, obj)
+            #Step3: checking the initial disk space
+            initial_diskspace = initial_diskspace(vm, obj)
+            print "The actual capacity of the disk is :" + str(initial_diskspace/(1024*1024))
+            new_size = input("Enter the new capacity in GB: ")
+            new_size = new_size * (1024 * 1024)
+            datacenter_name = "Nexiilabs"
+            increase_disk(vm, obj, new_size, initial_diskspace, datacenter_name)
+            # Disconnecting to Vcenter
+        else:
+            raise VmNotFoundException("Vm Not Found Error")
+        obj.disconnect(si)
 
 

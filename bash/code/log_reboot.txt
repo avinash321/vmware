@@ -1,0 +1,8 @@
+2017-04-06 17:11:57,657->INFO->Program Started
+2017-04-06 17:11:57,657->DEBUG-><vmware.VmwareLib instance at 0x7f82d8b452d8>
+2017-04-06 17:12:00,330->DEBUG->'vim.ServiceInstance:ServiceInstance'
+2017-04-06 17:12:03,291->INFO->Program Ended
+2017-04-06 17:14:16,528-->INFO-->Program Started
+2017-04-06 17:14:16,529-->DEBUG--><vmware.VmwareLib instance at 0x7f5b14c772d8>
+2017-04-06 17:17:00,138-->INFO-->Program Started
+2017-04-06 17:17:00,139-->DEBUG--><vmware.VmwareLib instance at 0x7ff8da3f12d8>
