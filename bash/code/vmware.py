@@ -36,17 +36,10 @@ class VmwareLib:
 
     def reboot_host(self,host,force):
         try:
-            t = host.RebootHost_Task(force)
-            status = t.info.state
-            if status == "success":
-                print "Rebooted the Host successfully"
-                return 0
-            elif status == "running":
-                print "Rebooted the Host is in progress"
-                return -1
-            elif status == "error":
-                print "failed to Rebooted the Host"
-                return -1
+            task = host.RebootHost_Task(force)
+            while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
+                time.sleep(1)
+            return task.info.state
         except Exception as err:
             print err.message
             print "Failed to Reboot, something went wrong"
@@ -55,17 +48,10 @@ class VmwareLib:
     def shut_down_host(self,host):
         try:
             #TODO return value should be handled
-            t = host.ShutdownHost_Task(True)
-            status = t.info.state
-            if status == "success":
-                print "ShutdownHost the Host successfully"
-                return 0
-            elif status == "running":
-                print "ShutdownHost the Host is in progress"
-                return -1
-            elif status == "error":
-                print "failed to ShutdownHost the Host"
-                return -1
+            task = host.ShutdownHost_Task(True)
+            while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
+                time.sleep(1)
+            return task.info.state
         except Exception as err:
             print err.message
             print "Failed to ShutdownHost, something went wrong"
@@ -74,18 +60,10 @@ class VmwareLib:
 
     def enter_maintanence_mode(self, host, timeout):
         try:
-            t = host.EnterMaintenanceMode_Task(timeout)
-            status = t.info.state
-            time.sleep(20)
-            if status == "success":
-                print "Enter maintanence mode successfully"
-                return 0
-            elif status == "running":
-                print "Enter maintanence is in progress"
-                return -1
-            elif status == "error":
-                print "failed to Enter maintanence mode"
-                return -1
+            task = host.EnterMaintenanceMode_Task(timeout)
+            while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
+                time.sleep(1)
+            return task.info.state
         except Exception as err:
             print err.message
             print "Failed to put into maintanencemode, something went wrong"
@@ -93,19 +71,10 @@ class VmwareLib:
 
     def exit_maintanence_mode(self, host, timeout):
         try:
-            t = host.ExitMaintenanceMode_Task(timeout)
-            status = t.info.state
-            time.sleep(15)
-            if status == "success":
-                print "Exit maintanence mode successfully"
-                return 0
-            elif status == "running":
-                print "Exit maintanence mode is in progress"
-                return -1
-            elif status == "error":
-                print "failed to Exit maintanence mode"
-                return -1
-
+            task = host.ExitMaintenanceMode_Task(timeout)
+            while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
+                time.sleep(1)
+            return task.info.state
         except Exception as err:
             print err.message
             print "Failed to put into exit maintanencemode, something went wrong"
@@ -161,9 +130,11 @@ class VmwareLib:
         return return_value
 
     def get_vmdk(self, vm):
+        return_value = None
         for device in vm.config.hardware.device:
             if type(device).__name__ == 'vim.vm.device.VirtualDisk':
-                return device.backing.fileName
+                return_value = device.backing.fileName
+        return return_value
 
     def disk_space_increase(self,si,vmdk,datacenter,sizeinkb,eagerzero):
         try:
@@ -171,6 +142,7 @@ class VmwareLib:
             task = virtualDiskManager.ExtendVirtualDisk(vmdk ,datacenter,sizeinkb,eagerzero)
             while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
                 time.sleep(1)
+            return task.info.state
         except Exception as err:
             print err.message
             print "Unable to increase the increase the disk space, somethin went"
@@ -182,20 +154,17 @@ class VmwareLib:
                 print "The given Vm is allready powered Off"
                 return power
             else:
-                power = vm.PowerOffVM_Task()
-                time.sleep(10)
-                status = power.info.state
+                task = vm.PowerOffVM_Task()
+                while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
+                    time.sleep(1)
+                status = task.info.state
                 if status == "success":
                     print "The given Vm "+ vm.name.upper() +", Powered Off Successfully"
-                    return power
-                elif status == "running":
-                    print "The given Vm "+ vm.name.upper() +", trying to power off"
-                    return power
+                    return status
                 elif status == "error":
                     print "The given Vm "+ vm.name.upper() +", Failed to power off"
-                    return power
+                    return status      
         except Exception as err:
-
             print "something went wrong, unable to power off the VM"
             print err.message
             return None
@@ -207,18 +176,16 @@ class VmwareLib:
                 print "The given Vm is allready powered on"
                 return power
             else:
-                power = vm.PowerOnVM_Task()
-                time.sleep(10)
-                status = power.info.state
+                task = vm.PowerOnVM_Task()
+                while task.info.state not in [vim.TaskInfo.State.success, vim.TaskInfo.State.error]:
+                    time.sleep(1)
+                status = task.info.state
                 if status == "success":
                     print "The given Vm "+ vm.name.upper() +", Powered ON Successfully"
-                    return power
-                elif status == "running":
-                    print "The given Vm "+ vm.name.upper() +", trying to power ON"
-                    return power
+                    return status
                 elif status == "error":
                     print "The given Vm "+ vm.name.upper() +", Failed to power ON"
-                    return power
+                    return status
         except Exception as err:
             print "something went wrong, unable to power on the VM"
             print err.message
@@ -236,24 +203,24 @@ class VmwareLib:
 
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    vcenter_ip = "183.82.41.58"
-    username = "root"
-    password = "VMware@123"
+#     vcenter_ip = "183.82.41.58"
+#     username = "root"
+#     password = "VMware@123"
 
-    # Creating Object for VMware Class
-    obj = VmwareLib(vcenter_ip, username, password)
+#     # Creating Object for VMware Class
+#     obj = VmwareLib()
 
-    # Connecting to Vcenter
-    si = obj.connect()
+#     # Connecting to Vcenter
+#     si = obj.connect(vcenter_ip, username, password)
 
-    #Getting the Required VM Object name by it's ID
-    vm = obj.get_vm_by_name(si,"avinash")
-    print vm.name
+#     #Getting the Required VM Object name by it's ID
+#     vm = obj.get_vm_by_name(si,"avinash")
+#     print vm.name
 
-    obj.power_state_vm(vm)
+#     obj.power_state_vm(vm)
 
 
-    # Disconnecting to Vcenter
-    obj.disconnect(si)
+#     # Disconnecting to Vcenter
+#     obj.disconnect(si)

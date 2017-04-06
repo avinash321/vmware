@@ -29,7 +29,10 @@ if __name__ == "__main__":
 
     #Reboot operation
     host_name = "192.168.50.22"
-    maintanencemode(si, host_name, obj)
+    try:
+        maintanencemode(si, host_name, obj)
+    except VMMaintenceException as vmerror:
+        print "VMMaintenence exception"
 
     # Disconnecting to Vcenter
     obj.disconnect(si)

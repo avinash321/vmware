@@ -4,10 +4,11 @@ this will Increse the Disk space of he VM
 from vmware import VmwareLib
 import time
 
-class NoDatacenterFound(Exception):
+class VMNoDatacenterFound(Exception):
+    pass
+class VmNotFoundException(Exception):
     pass
 
-# VM
 def get_vm(si, vm_name, obj):
     vm = obj.get_vm_by_name(si,vm_name)
     return vm
@@ -15,12 +16,20 @@ def get_vm(si, vm_name, obj):
 def power_off_vm(vm,obj):
     status = obj.power_state_vm(vm)
     if status == "poweredOn":
-        obj.power_off_vm(vm)
+        print "powering off the Vm......."
+        status = obj.power_off_vm(vm)
+    else:
+        print "something went wrong"
+        return status
 
 def initial_diskspace(vm,obj):
     # disk space of the VM Before increasing
-    initial_diskspace = obj.disk_space_of_vm(vm)
-    return initial_diskspace
+    try:
+        initial_diskspace = obj.disk_space_of_vm(vm)
+        return initial_diskspace
+    except Exception as err:
+        err.message
+        return None
 
 # Here the value represents in gb
 def increase_disk(vm, obj, new_size, initial_diskspace,datacenter_name):
@@ -31,23 +40,27 @@ def increase_disk(vm, obj, new_size, initial_diskspace,datacenter_name):
         datacenter = obj.get_datacenter_by_name(si,datacenter_name)
 
         if datacenter:
-            obj.disk_space_increase(si,vmdk,datacenter,new_size,eagerzero)
-            time.sleep(8)
+            # This will increase the disk space
+            task = obj.disk_space_increase(si,vmdk,datacenter,new_size,eagerzero)
+            # Verifying weather disk sapce is is increaswed or not
             new_diskspace = obj.disk_space_of_vm(vm)
-
             if new_diskspace > initial_diskspace:
                 print "Disk space increased succesfully"
                 # disk space of the VM After increasing
                 print "New Disk space is : "+ str(new_diskspace/ (1024*1024)) + "GB"
+                return new_diskspace/ (1024*1024)
+                return 0
             else:
                 print "Disk space Not increased"
+                return -1
         else:
-            raise NoDatacenterFound("Datacenter Not Found Error")
+            raise VMNoDatacenterFound("Datacenter Not Found Error")
     else:
         print "The Initial capacity is :" + str(initial_diskspace/ (1024*1024) )+ "GB"
         print "The Given New capacity is: " + str(new_size/ (1024*1024))+ "GB"
         
         print "Newsize should be greater than Initial size"
+        return -1
 
 
 
@@ -80,6 +93,8 @@ if __name__ == "__main__":
         datacenter_name = "Nexiilabs"
         increase_disk(vm, obj, new_size, initial_diskspace, datacenter_name)
         # Disconnecting to Vcenter
+    else:
+        raise VmNotFoundException("Vm Not Found Error")
     obj.disconnect(si)
 
 

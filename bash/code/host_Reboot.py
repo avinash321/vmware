@@ -2,17 +2,17 @@
 This will Reboot the given Esxi Host
 '''
 from vmware import VmwareLib
-class RebootException(Exception):
+class VMRebootException(Exception):
    pass
 
-def reboot(si, host_name, obj):
+def VMreboot(si, host_name, obj):
 	host = obj.get_host_by_name(si, host_name)
 	#This will Reboot the given Esxi Host
 	if host:
 		force = True
 		obj.reboot_host(host, force)
     else:
-        raise RebootException("Host error")
+        raise VMRebootException("Host error")
 
 if __name__ == "__main__":
 
@@ -28,7 +28,10 @@ if __name__ == "__main__":
 
     #Reboot operation
     host_name = "192.168.50.16"
-    reboot(si, host_name, obj)
+    try:
+        VMreboot(si, host_name, obj)
+    except VMRebootException as vmerror:
+        print "VMreboot exception"
 
     # Disconnecting to Vcenter
     obj.disconnect(si)

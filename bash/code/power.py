@@ -19,7 +19,7 @@ if __name__ == "__main__":
     si = obj.connect(vcenter_ip, username, password)
 
     #Getting Vm
-    vm_name = "avinash2"
+    vm_name = "avinash"
     vm = get_vm(si, vm_name, obj)
     if vm:
         print "plese select any one of the follwing options"
