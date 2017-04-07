@@ -6,3 +6,9 @@
 2017-04-06 17:14:16,529-->DEBUG--><vmware.VmwareLib instance at 0x7f5b14c772d8>
 2017-04-06 17:17:00,138-->INFO-->Program Started
 2017-04-06 17:17:00,139-->DEBUG--><vmware.VmwareLib instance at 0x7ff8da3f12d8>
+2017-04-07 10:28:37,338-->INFO-->Program Started
+2017-04-07 10:28:37,338-->DEBUG--><vmware.VmwareLib instance at 0x7fa733b3c2d8>
+2017-04-07 10:28:37,476-->DEBUG-->None
+2017-04-07 10:29:01,632-->INFO-->Program Started
+2017-04-07 10:29:01,633-->DEBUG--><vmware.VmwareLib instance at 0x7f528bab22d8>
+2017-04-07 10:29:01,689-->DEBUG-->None

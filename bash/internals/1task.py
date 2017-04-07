@@ -1,3 +1,9 @@
+'''
+Date: 7th April 2017
+Author: Avinash 
+Description: This module will print the 100th year of a person based on his current age
+'''
+
 import datetime
 
 def age_100_year(current_year, age_remain):
