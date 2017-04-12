@@ -3,35 +3,53 @@ ssh=paramiko.SSHClient()
 ssh.load_system_host_keys()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy)  
 #ssh.set_missing_host_key_policy(paramiko.WarningPolicy)
-def connect():
+import logging
+logging.basicConfig(filename="log_Esxi_maintanence_mode.txt",level=logging.DEBUG,
+format = "%(asctime)s-->%(levelname)s-->%(message)s")
+
+def connect(ip, port_num, uid, pwd):
 	try:
-		conn = ssh.connect("192.168.50.14",port=22,username="roo",password="Avinash")
-		print "Connected Successfully"
+		conn = ssh.connect(ip, port=port_num, username=uid, password=pwd)
+		return conn
 	except Exception as err:
-		print err
+		print err.message
 
 def vcenter_down():
 	try:
-		stdin,stdout,strerr=ssh.exec_command('shutdown -r +5 "Server will restart in 5 minutes. Please save your work."')
+		stdin,stdout,strerr=ssh.exec_command('ls')
 		# shutdown -h now     (immidiate Shutdown)
 		# shutdown -h +5 "Server is going down for upgrade. Please save your work."
-		#(shutdown with 5min Delay)
+		# shutdown -r +5 "Server will restart in 5 minutes. Please save your work."
 		output=stdout.readlines()
-		print output
+		return output
 	except Exception as err:
 		print err.message
 
 def disconnect():
 	try:
 		close = ssh.close()
-		print "DisConnected Successfully"
+		return close
 	except Exception as err:
 		print err.message
 
+def main():
+	ip = "192.168.50.14"
+	port  = 22
+	username = "root"
+	password = "Avinas"
+	conn = connect(ip, port, username, password)
+	if conn:
+		loggr.info("connection successful")
+		result = vcenter_down()
+		logger.debug(result)
+		logger.info("Command Exceuted")
+		close  = disconnect()
+		logger.debug(close)
+
 if __name__ == "__main__":
-	connect()
-	vcenter_down()
-	disconnect()
+	main()
+
+
 
 
 

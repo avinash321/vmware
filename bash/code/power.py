@@ -6,8 +6,7 @@ def get_vm(si,vm_name, obj):
     vm = obj.get_vm_by_name(si,vm_name)
     return vm
 
-if __name__ == "__main__":
-
+def main():
     # Creating Object for VMwareLib Class
     obj = VmwareLib()
 
@@ -38,3 +37,6 @@ if __name__ == "__main__":
                 print "please select valid option"
 
         obj.disconnect(si)
+
+if __name__ == "__main__":
+    main()

@@ -2,6 +2,7 @@ from pyVmomi import vim
 from pyVim.connect import SmartConnect, Disconnect
 import time
 import ssl
+import logging
 
 class VmwareLib:
         
@@ -202,25 +203,5 @@ class VmwareLib:
             return None
 
 
-
-# if __name__ == "__main__":
-
-#     vcenter_ip = "183.82.41.58"
-#     username = "root"
-#     password = "VMware@123"
-
-#     # Creating Object for VMware Class
-#     obj = VmwareLib()
-
-#     # Connecting to Vcenter
-#     si = obj.connect(vcenter_ip, username, password)
-
-#     #Getting the Required VM Object name by it's ID
-#     vm = obj.get_vm_by_name(si,"avinash")
-#     print vm.name
-
-#     obj.power_state_vm(vm)
-
-
-#     # Disconnecting to Vcenter
-#     obj.disconnect(si)
+if __name__ ==  "__main__":
+    pass

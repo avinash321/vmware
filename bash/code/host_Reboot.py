@@ -4,8 +4,8 @@ This will Reboot the given Esxi Host
 from vmware import VmwareLib
 import logging
 
-logging.basicConfig(filename="log_reboot.txt",level=logging.DEBUG,
-format="%(asctime)s-->%(levelname)s-->%(message)s")
+logging.basicConfig(filename="log_host_Reboot.txt",level=logging.DEBUG,
+format = "%(asctime)s-->%(levelname)s-->%(message)s")
 class VMRebootException(Exception):
    pass
 
@@ -18,11 +18,11 @@ def VMreboot(si, host_name, obj):
     else:
         raise VMRebootException("Host error")
 
-if __name__ == "__main__":
-
+def main():
     # Creating Object for VMwareLib Class
     logging.info("Program Started")
     obj = VmwareLib()
+    logging.info("Object created for VmwareLib")
     logging.debug(obj)
     vcenter_ip = "183.82.41.58"
     username = "root"
@@ -32,14 +32,18 @@ if __name__ == "__main__":
     si = obj.connect(vcenter_ip, username, password)
     logging.debug(si)
     if si:
+        logging.info("connection object created")
+        loggin.debug(si)
         #Reboot operation
         host_name = "192.168.50.16"
         try:
             VMreboot(si, host_name, obj)
         except VMRebootException as vmerror:
             logging.exception(vmerror)
-            print "VMreboot exception"
-
+            logging.info("VMreboot exception")
         # Disconnecting to Vcenter
         obj.disconnect(si)
         logging.info("Program Ended")
+
+if __name__ == "__main__":
+    main()
