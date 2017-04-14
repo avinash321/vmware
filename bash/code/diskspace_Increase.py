@@ -5,7 +5,7 @@ from vmware import VmwareLib
 import time
 import logging
 
-logging.basicConfig(filename="log_Esxi_maintanence_mode.txt",level=logging.DEBUG,
+logging.basicConfig(filename="log_diskspace_increase.txt",level=logging.DEBUG,
 format = "%(asctime)s-->%(levelname)s-->%(message)s")
 
 class VMNoDatacenterFound(Exception):
@@ -23,9 +23,6 @@ def power_off_vm(vm,obj):
         print "powering off the Vm......."
         logging.info("powering off the Vm.......")
         status = obj.power_off_vm(vm)
-    else:
-        print "something went wrong"
-        logging.info("something went wrong")
         return status
 
 def initial_diskspace(vm,obj):
@@ -38,16 +35,18 @@ def initial_diskspace(vm,obj):
         return None
 
 # Here the value represents in gb
-def increase_disk(vm, obj, new_size, initial_diskspace,datacenter_name):
+def increase_disk(si, vm, obj, new_size, initial_diskspace,datacenter_name):
+    
     if new_size > initial_diskspace:
         # Getting Vmdk for the given vm
         vmdk = obj.get_vmdk(vm)
         eagerzero = False
-        datacenter = obj.get_datacenter_by_name(si,datacenter_name)
+        datacenter = obj.get_datacenter_by_name(si, datacenter_name)
 
         if datacenter:
             # This will increase the disk space
             task = obj.disk_space_increase(si,vmdk,datacenter,new_size,eagerzero)
+            time.sleep(15)
             # Verifying weather disk sapce is is increaswed or not
             new_diskspace = obj.disk_space_of_vm(vm)
             if new_diskspace > initial_diskspace:
@@ -57,7 +56,6 @@ def increase_disk(vm, obj, new_size, initial_diskspace,datacenter_name):
                 print "New Disk space is : "+ str(new_diskspace/ (1024*1024)) + "GB"
                 logging.info("New Disk space is : "+ str(new_diskspace/ (1024*1024)) + "GB")
                 return new_diskspace/ (1024*1024)
-                return 0
             else:
                 print "Disk space Not increased"
                 logging.info("Disk space Not increased")
@@ -89,10 +87,10 @@ def main():
     si = obj.connect(vcenter_ip, username, password)
     if si:
         logging.info("connection object created")
-        loggin.debug(si)
+        logging.debug(si)
         #Disk Increasing Operation
         #step1: (Getting the Target VM)
-        vm_name = "avinash"
+        vm_name = "ubuntu16.04"
         vm = get_vm(si, vm_name, obj)
 
         if vm:
@@ -100,14 +98,22 @@ def main():
             #Step2: Checking the powersgtatus of the VM , If power is ON , it will Power off the VM
             power_off_vm(vm, obj)
             #Step3: checking the initial disk space
-            initial_diskspace = initial_diskspace(vm, obj)
-            print "The actual capacity of the disk is :" + str(initial_diskspace/(1024*1024))
-            logging.info("The actual capacity of the disk is :" + str(initial_diskspace/(1024*1024)))
-            new_size = input("Enter the new capacity in GB: ")
-            new_size = new_size * (1024 * 1024)
-            datacenter_name = "Nexiilabs"
-            increase_disk(vm, obj, new_size, initial_diskspace, datacenter_name)
-            # Disconnecting to Vcenter
+            diskspace_initial = initial_diskspace(vm, obj)
+            print "The actual capacity of the disk is :" + str(diskspace_initial/(1024*1024))
+            logging.info("The actual capacity of the disk is :" + str(diskspace_initial/(1024*1024)))
+            new_size = raw_input("Enter the new capacity in GB: ")
+            while not new_size:
+                new_size = raw_input("Enter the new capacity in GB: ")
+            try:
+                new_size = int(new_size)
+                new_size = new_size * (1024 * 1024)
+                datacenter_name = "Nexiilabs"
+                increase_disk(si, vm, obj, new_size, diskspace_initial, datacenter_name)
+                # Disconnecting to Vcenter
+            except ValueError:
+                print "Please Enter Number only"
+            except Exception as err:
+                print err 
         else:
             raise VmNotFoundException("Vm Not Found Error")
         obj.disconnect(si)

@@ -110,7 +110,7 @@ def get_templates_vms(si):
 def connect():
     vcenter = "183.82.41.58"
     username = "root"
-    password = "VMware@123"
+    password = "Nexii@123"
 
     si = None
     s = ssl.SSLContext(ssl.PROTOCOL_TLSv1)

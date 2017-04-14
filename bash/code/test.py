@@ -12,7 +12,7 @@ def main():
     obj = VmwareLib()
     vcenter_ip = "183.82.41.58"
     username = "root"
-    password = "VMware@123"
+    password = "Nexii@123"
     # Connecting to Vcenter
     si = obj.connect(vcenter_ip, username, password)
     name("avinash",obj)

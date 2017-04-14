@@ -146,7 +146,7 @@ class VmwareLib:
             return task.info.state
         except Exception as err:
             print err.message
-            print "Unable to increase the increase the disk space, somethin went"
+            print "Unable to increase the increase the disk space, somethin went wrong"
 
     def power_off_vm(self,vm):
         try:
