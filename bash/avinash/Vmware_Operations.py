@@ -130,7 +130,7 @@ class Vmware_Operations():
             print "powering of the vm..."
             self.power_off_vm(vm_name)
         initial_diskspace = self.__get_disk_space_of_vm(vm_name)
-        new_size = new_size * 1024*1024
+        new_size = int(new_size) * (1024*1024)
         if new_size > initial_diskspace:
             # Getting Vmdk for the given vm
             vmdk = self.__get_vmdk(vm_name)
@@ -138,7 +138,7 @@ class Vmware_Operations():
             datacenter = self.__get_datacenter_by_name(datacenter_name)
             if datacenter:
                 # This will increase the disk space
-                task = self.increase_disk(vmdk,datacenter,new_size,eagerzero)
+                task = self.__increase_disk(vmdk,datacenter,new_size,eagerzero)
                 time.sleep(15)
                 # Verifying weather disk sapce is is increaswed or not
                 new_diskspace = self.__get_disk_space_of_vm(vm_name)
@@ -301,12 +301,14 @@ class Vmware_Operations():
         vm = self.__get_vm_by_name(vm_name)
         try:
             power = vm.runtime.powerState
-            print "The given Vm "+ vm.name.upper() + " Power Status is: " + '\033[1m' + power.upper() + '\033[0m'
+            print "The given Vm "+ vm.name.upper() + " Power Status is: " + power.upper()
+            logging.info("The given Vm "+ vm.name.upper() + " Power Status is: " + power.upper())
             return power
         except Exception as err:
             print "something went wrong, unable to print the power state of the VM"
             print err.message
             return None
+
 
 
 if __name__ == '__main__':
