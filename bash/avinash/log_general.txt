@@ -10,3 +10,19 @@
 2017-04-27 16:11:58,047-->INFO-->Connected to Vcenter Successfully
 2017-04-27 16:13:19,086-->INFO-->Connected to Vcenter Successfully
 2017-04-27 16:13:28,053-->INFO-->The given Vm FANCY, Migrated Successfully
+2017-04-27 16:35:30,457-->INFO-->Connected to Vcenter Successfully
+2017-04-27 16:35:32,346-->INFO-->The given Vm FANCY, Failed to Migrate
+2017-04-27 16:47:29,620-->INFO-->Connected to Vcenter Successfully
+2017-04-27 16:48:43,200-->INFO-->Connected to Vcenter Successfully
+2017-04-27 16:49:14,217-->INFO-->Connected to Vcenter Successfully
+2017-04-27 16:49:16,450-->INFO-->The given Vm FANCY, Failed to Migrate
+2017-04-27 16:51:42,993-->INFO-->Something went wrong (please check your Vcenter Ip)
+2017-04-27 16:52:36,968-->INFO-->Something went wrong (please check your Vcenter Ip)
+2017-04-27 16:53:00,425-->INFO-->Something went wrong (please check your Vcenter Ip)
+2017-04-27 16:53:12,240-->INFO-->Something went wrong (please check your Vcenter Ip)
+2017-04-27 16:54:00,856-->INFO-->Something went wrong (please check your Vcenter Ip)
+2017-04-27 16:54:07,978-->INFO-->Something went wrong (please check your Vcenter Ip)
+2017-04-27 16:54:29,916-->INFO-->Something went wrong (please check your Vcenter Ip)
+2017-04-27 16:54:40,604-->INFO-->Something went wrong (please check your Vcenter Ip)
+2017-04-27 16:58:26,897-->INFO-->Connected to Vcenter Successfully
+2017-04-27 16:58:29,178-->INFO-->The given Vm FANCY, Failed to Migrate

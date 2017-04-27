@@ -263,7 +263,6 @@ class Vmware_Operations():
         This will power off the vm based on the given vm name'''
         vm = self.__get_vm_by_name(vm_name)
         try:
-            logging.info("Checking the power status of the VM")
             power = self.power_state_vm(vm_name)
             if power == "poweredOff":
                 logging.info("The given Vm is allready powered Off")
@@ -317,7 +316,6 @@ class Vmware_Operations():
         This will power status based on the given vm name'''
         vm = self.__get_vm_by_name(vm_name)
         try:
-            logging.info("Checking the power status of the VM")
             power = vm.runtime.powerState
             logging.info("The given Vm "+ vm.name.upper() + " Power Status is: " + power.upper())
             return power
@@ -335,12 +333,7 @@ class Vmware_Operations():
         vm_name: Name of the Vm that you want to migrate
         esx_host: The Destination (or) Targeted Host, 
         pool : The Destination pool (or) Targeted pool
-
         '''
-        #vm_name = "fancy"
-        #esx_host = "192.168.50.14"                 
-        #pool = "pool-14"
-
         # Finding source VM based on the name
         vm = self.__get_vm_by_name(vm_name)
         # Finding Targeted Host (or) Destination Host based on the host ip
@@ -351,6 +344,7 @@ class Vmware_Operations():
 
         migrate_priority = vim.VirtualMachine.MovePriority.defaultPriority
 
+        # Powering off the Vm 
         if(vm and host and pool):
             # relocate spec, to migrate to another host
             # this can do other things, like storage migration
@@ -365,17 +359,19 @@ class Vmware_Operations():
                 elif status == "error":
                     logging.info("The given Vm "+ vm.name.upper() +", Failed to Migrate")
                     return status 
+
             except vmodl.MethodFault, e:
                 print "Caught vmodl fault: %s" % e.msg
             except Exception, e:
                 print "Caught exception: %s" % str(e)
                 print e.message
 
-        else:
-            #raise VmotionException("Vm or Host Not found Error")
-            logging.info("The given vm or Host or pool not found")
-            print "The given vm or Host or pool not found"
-
+        elif(vm == None):
+            logging.info("The given vm not found")
+        elif(host == None):
+            logging.info("The given Host not found")
+        elif(pool == None):
+            logging.info("The given pool not found")
 
 if __name__ == '__main__':
     obj = Vmware_Operations()
