@@ -345,6 +345,9 @@ class Vmware_Operations():
         migrate_priority = vim.VirtualMachine.MovePriority.defaultPriority
 
         # Powering off the Vm 
+        power_status = self.power_state_vm(vm_name)
+        if power_status == "poweredOn":
+            self.power_off_vm(vm_name)
         if(vm and host and pool):
             # relocate spec, to migrate to another host
             # this can do other things, like storage migration
