@@ -1,7 +1,6 @@
 from pyVmomi import vim
 from pyVim.connect import SmartConnect, Disconnect
 import time
-import ssl
 
 def _get_obj(content, vimtype, name):
     """
@@ -74,14 +73,6 @@ def get_datastores(si):
     """
     return _get_all_objs(si.RetrieveContent(), [vim.Datastore])
 
-#----------------Changed
-
-def get_datastore(si,name):
-    """
-    Returns the data store
-    """
-    return _get_obj(si.RetrieveContent(), [vim.Datastore] , name)
-
 def get_hosts(si):
     """
     Returns all hosts
@@ -99,51 +90,3 @@ def get_registered_vms(si):
     Returns all vms
     """
     return _get_all_objs(si.RetrieveContent(), [vim.VirtualMachine])
-
-def get_templates_vms(si):
-    """
-    Returns all vms
-    """
-    return _get_all_objs(si.RetrieveContent(), [vim.VmTemplates])
-#----------------------------------------------------------------------------------------
-
-def connect():
-    vcenter_ip = "183.82.41.58"
-    username = "root"
-    password  = "Nexii@123"
-
-
-    '''Vcenter connection:
-    This is to create Vcenter server Instance. This will make the connection to the given 
-    vcenter server ip by verifying the given username and password and returns that connection object'''
-    try:
-        si = SmartConnect(host = vcenter_ip, user = username, pwd = password)
-        #logging.info("Connected to Vcenter Successfully")
-        self.si = si
-        return si
-
-    except ssl.SSLError:
-        s = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-        s.verify_mode = ssl.CERT_NONE
-        #logging.info("Trying to Connect Vcenter ......")
-        try:
-            si = SmartConnect(host = vcenter_ip, user = username, pwd = password, sslContext = s)
-            if si:
-                logging.info("Connected to Vcenter Successfully")
-                self.si = si
-                return si
-        except Exception as err:
-            return None
-    except Exception as err:
-        #logging.info("Something went wrong (please check your Vcenter Ip)")
-        return None
-
-def disconnect(si):
-    print "Trying to Disconnect Vcenter ......"
-    Disconnect(si)
-    print "Disconeected to Vcenter Successfully"
-
-
-
-
-

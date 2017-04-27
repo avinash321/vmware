@@ -1,0 +1,26 @@
+1492758524989	geckodriver	INFO	Listening on 127.0.0.1:55398
+1492758526058	mozprofile::profile	INFO	Using profile path /tmp/rust_mozprofile.Q4S2N1B6ZHUk
+1492758526059	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args []
+1492758526062	geckodriver::marionette	INFO	Connecting to Marionette on localhost:51239
+
+(firefox:11908): GLib-GObject-CRITICAL **: g_object_ref: assertion 'object->ref_count > 0' failed
+
+(firefox:11908): GLib-GObject-CRITICAL **: g_object_unref: assertion 'object->ref_count > 0' failed
+
+(firefox:11908): GLib-GObject-CRITICAL **: g_object_ref: assertion 'object->ref_count > 0' failed
+
+(firefox:11908): GLib-GObject-CRITICAL **: g_object_unref: assertion 'object->ref_count > 0' failed
+1492758527442	Marionette	INFO	Listening on port 51239
+1492758528990	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/plugin-container:11980): GLib-GObject-CRITICAL **: g_object_ref: assertion 'object->ref_count > 0' failed
+
+(/usr/lib/firefox/plugin-container:11980): GLib-GObject-CRITICAL **: g_object_unref: assertion 'object->ref_count > 0' failed
+
+(/usr/lib/firefox/plugin-container:11980): GLib-GObject-CRITICAL **: g_object_ref: assertion 'object->ref_count > 0' failed
+
+(/usr/lib/firefox/plugin-container:11980): GLib-GObject-CRITICAL **: g_object_unref: assertion 'object->ref_count > 0' failed
+
+(firefox:11908): GLib-GObject-CRITICAL **: g_object_ref: assertion 'object->ref_count > 0' failed
+
+(firefox:11908): GLib-GObject-CRITICAL **: g_object_unref: assertion 'object->ref_count > 0' failed

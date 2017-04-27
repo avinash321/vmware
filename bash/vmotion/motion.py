@@ -1,14 +1,15 @@
 from pyVmomi import vim
 from pyVim.connect import SmartConnect, Disconnect
+import getpass
 import vmutils
 import random
 
 si = None
-username = raw_input('root')
-password = raw_input('Nexii@123')
-vcenter = raw_input('183.82.41.58')
-vm_name = raw_input('test2')
-esx_host = raw_input('192.168.50.14')
+username = "root"
+password = "Nexii@123"
+vcenter = "183.82.41.58"
+vm_name = "fancy"
+esx_host = "192.168.50.16"
 
 try:
     si = SmartConnect(host=vcenter, user=username, pwd=password, port=443)
@@ -30,6 +31,10 @@ vm = vmutils.get_vm_by_name(si, vm_name)
 relocate_spec = vim.vm.RelocateSpec(host=esx_host)
 
 # does the actual migration to host
-vm.Relocate(relocate_spec)
+try:
+	vm.Relocate(relocate_spec)
+	print "No error"
+except Exception as err:
+	print err.message
 
 Disconnect(si)

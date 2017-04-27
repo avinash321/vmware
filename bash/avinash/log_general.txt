@@ -1,0 +1,12 @@
+2017-04-27 15:52:15,123-->INFO-->Connected to Vcenter Successfully
+2017-04-27 15:52:45,065-->INFO-->Connected to Vcenter Successfully
+2017-04-27 15:53:10,039-->INFO-->Connected to Vcenter Successfully
+2017-04-27 15:54:05,176-->INFO-->Connected to Vcenter Successfully
+2017-04-27 15:54:08,675-->INFO-->The given Vm FANCY, Migrated Successfully
+2017-04-27 15:55:07,313-->INFO-->Connected to Vcenter Successfully
+2017-04-27 15:55:10,829-->INFO-->The given Vm FANCY, Migrated Successfully
+2017-04-27 15:57:10,575-->INFO-->Connected to Vcenter Successfully
+2017-04-27 15:57:13,783-->INFO-->The given Vm FANCY, Migrated Successfully
+2017-04-27 16:11:58,047-->INFO-->Connected to Vcenter Successfully
+2017-04-27 16:13:19,086-->INFO-->Connected to Vcenter Successfully
+2017-04-27 16:13:28,053-->INFO-->The given Vm FANCY, Migrated Successfully

@@ -4,8 +4,8 @@ import random
 
 si = vmutils.connect()
 
-vm_name = raw_input('VM: ')
-esx_host = raw_input('ESX Host: ')
+vm_name = raw_input('test2')
+esx_host = raw_input('192.168.50.14')
 
 if esx_host == '':
     all_hosts = vmutils.get_hosts(si)
